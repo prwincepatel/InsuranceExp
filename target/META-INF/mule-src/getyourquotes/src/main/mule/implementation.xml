@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:insurance-p-api="http://www.mulesoft.org/schema/mule/insurance-p-api" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/insurance-p-api http://www.mulesoft.org/schema/mule/insurance-p-api/current/mule-insurance-p-api.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="6407561c-0e39-47b8-88a9-cc0f705b5155" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<insurance-p-api:config name="Insurance_P_API_Config" doc:name="Insurance-P-API Config" doc:id="63ea27eb-6bda-459a-8414-d37e560b6b23" property_host="insurance-sp-processapp.us-e2.cloudhub.io" property_port="80" property_protocol="HTTP" property_basePath="/api" />
+	<flow name="GetQuotes" doc:id="93292424-5e3e-44fd-8dd7-dda7c42b989b" >
+		<try doc:name="Try" doc:id="e83b80bd-cdaf-421c-b183-0a6b28a0da38" >
+			<insurance-p-api:get-insurance-quotes doc:name="Get insurance quotes" doc:id="7683c5b4-e175-46cc-81d1-328aa0d9e3bf" config-ref="Insurance_P_API_Config" id="#[attributes.queryParams.id]" source="#[attributes.queryParams.source]" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="90eddc7b-f2c7-40ee-b27d-87f1494d5fbf" >
+					<set-payload value="#[{&#10;	message: error.description&#10;}]" doc:name="Set Payload" doc:id="f835cb68-0f91-4180-a18d-e8b6f42a27fa" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<logger level="INFO" doc:name="Logger" doc:id="665eba0c-4787-412b-81e5-85c5dd1e20b6" message="#[payload]"/>
+	</flow>
+</mule>
