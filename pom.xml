@@ -49,14 +49,14 @@
 	</build>
 
 	<dependencies>
-		<!--  <dependency>
+		 <dependency>
 			<groupId>4c2825dd-e397-4b98-8eb5-fdf4c967c16e</groupId>
 			<artifactId>getyourquotestoday</artifactId>
 			<version>1.0.0</version>
 			<classifier>raml</classifier>
 			<type>zip</type>
 		</dependency>
-		-->
+		
 		<dependency>
 			<groupId>org.mule.modules</groupId>
 			<artifactId>mule-apikit-module</artifactId>
